@@ -142,6 +142,16 @@ class MainViewController: UIViewController {
     }
 
     @objc func collectPayment(sender: UIButton) {
+        guard let amountString = paymentTextField.text else {
+            errorAlert("Please input an amount to collect.")
+            return
+        }
+
+        guard let amountNumber = Int(amountString) else {
+            errorAlert("Please enter valid integer.")
+            return
+        }
+
         // TODO: Fill in flow for collecting payments. Since there are multiple steps
         // you may want to print to the console (call print(<string>)) after each step is done.
         // You could also use the loading view and continue to update what is going on. g
