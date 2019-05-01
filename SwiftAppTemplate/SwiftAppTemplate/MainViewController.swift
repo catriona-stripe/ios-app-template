@@ -35,7 +35,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         title = "Terminal Example App"
         view.backgroundColor = UIColor.white
 
-        connectReaderButton.setTitle("Connect Reader", for: .normal)
+        connectReaderButton.setTitle("Discover Readers", for: .normal)
         connectReaderButton.setTitleColor(UIColor.white, for: .normal)
         connectReaderButton.layer.borderWidth = 1.0
         connectReaderButton.layer.borderColor = MainViewController.stripeBlue.cgColor
