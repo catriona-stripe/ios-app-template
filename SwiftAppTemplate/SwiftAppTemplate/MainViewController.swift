@@ -144,6 +144,6 @@ class MainViewController: UIViewController {
     @objc func collectPayment(sender: UIButton) {
         // TODO: Fill in flow for collecting payments. Since there are multiple steps
         // you may want to print to the console (call print(<string>)) after each step is done.
-        // You could also use the loading view and continue to update what is going on. 
+        // You could also use the loading view and continue to update what is going on. g
     }
 }
