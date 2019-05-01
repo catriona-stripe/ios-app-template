@@ -8,6 +8,7 @@
 
 import Alamofire
 
+// TODO: Make this class implement the ConnectionTokenProvider protocol
 class APIClient {
 
     /**
@@ -22,5 +23,4 @@ class APIClient {
 
     static var backendUrl: String? = nil
 
-    // TODO: Make this class implement the ConnectionTokenProvider protocol
 }

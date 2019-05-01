@@ -15,13 +15,14 @@ class ReaderListViewController: UIViewController, UITableViewDelegate, UITableVi
 
     private static var cellReuseIdentifier = "readerCell"
 
-    // Update this "Any" to be "Reader" once you have link the terminal sdk
+    // TODO: update Any to Reader from StripeTerminal
     private var readers: [Any] = []
 
-    init() {
+    init(readers: [Any]) {
         super.init(nibName: nil, bundle: nil)
         tableView.delegate = self
         tableView.dataSource = self
+        self.readers = readers
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -61,7 +62,7 @@ class ReaderListViewController: UIViewController, UITableViewDelegate, UITableVi
     // Mark - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Once a tableview has been selected call connectReader on this table view.
+        // TODO: Once a cell has been selected call connectReader on this reader.
     }
 
     // Mark - UITableViewDataSource
@@ -74,7 +75,7 @@ class ReaderListViewController: UIViewController, UITableViewDelegate, UITableVi
 
         let cell = UITableViewCell(style: .default, reuseIdentifier: ReaderListViewController.cellReuseIdentifier)
 
-        // TODO: Set the cells textLabel to display the reader serial number
+        // TODO: Set the cell's textLabel to display the reader serial number
 
         let bottomBorder = UIView()
         bottomBorder.backgroundColor = UIColor.lightGray

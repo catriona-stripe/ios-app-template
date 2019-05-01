@@ -9,10 +9,13 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    private  var connectReaderButton = UIButton()
-    private var collectPaymentButton = UIButton()
-    private var paymentTextField = UITextField()
-    private var containerView = UIView()
+    private let connectReaderButton = UIButton()
+    private let collectPaymentButton = UIButton()
+    private let paymentTextField = UITextField()
+    private let containerView = UIView()
+    private let loadingIndicator = UIActivityIndicatorView()
+    private let loadingContainerView = UIView()
+    private let loadingLabel = UILabel()
 
     private static let spacing: CGFloat = 50.0
     private static let stripeBlue = UIColor(red: 103.0/255.0, green:  114.0/255.0, blue: 229.0/255.0, alpha: 1.0)
@@ -48,19 +51,27 @@ class MainViewController: UIViewController {
         collectPaymentButton.layer.cornerRadius = 4.0
         collectPaymentButton.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
         collectPaymentButton.backgroundColor = MainViewController.stripeBlue
+        collectPaymentButton.addTarget(self, action: #selector(collectPayment), for: .touchUpInside)
 
         paymentTextField.placeholder = "0"
         paymentTextField.keyboardType = .numbersAndPunctuation
         paymentTextField.borderStyle = .roundedRect
 
-        let paddingView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 0.0))
-        paymentTextField.leftView = paddingView
+        paymentTextField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 0.0))
         paymentTextField.leftViewMode = .always
+
+        loadingContainerView.isHidden = true
+        loadingContainerView.backgroundColor = UIColor(white: 0.0, alpha: 0.75)
+
+        loadingLabel.textColor = UIColor.white
 
         view.addSubview(containerView)
         containerView.addSubview(connectReaderButton)
         containerView.addSubview(collectPaymentButton)
         containerView.addSubview(paymentTextField)
+        view.addSubview(loadingContainerView)
+        loadingContainerView.addSubview(loadingIndicator)
+        loadingContainerView.addSubview(loadingLabel)
 
         containerView.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
@@ -94,16 +105,45 @@ class MainViewController: UIViewController {
             collectPaymentButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             collectPaymentButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
             collectPaymentButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
-            ])
+        ])
+
+        loadingContainerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loadingContainerView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        ])
+
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: loadingContainerView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: loadingContainerView.centerYAnchor),
+        ])
+
+        loadingLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loadingLabel.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor, constant: MainViewController.spacing),
+            loadingLabel.centerXAnchor.constraint(equalTo: loadingContainerView.centerXAnchor)
+        ])
     }
 
 
     @objc func discoverReader(sender: UIButton) {
-        let readerViewController = ReaderListViewController()
-        navigationController?.pushViewController(readerViewController, animated: true)
+        loadingLabel.text = "Discovering Readers..."
+        loadingContainerView.isHidden = false
+        loadingIndicator.startAnimating()
+
+        // TODO once you have discovered some readers create a
+        // ReaderListViewController and push it onto the navigationController.
+
+        // let readerViewController = ReaderListViewController(readers)
+        // navigationController?.pushViewController(readerViewController, animated: true)
     }
 
-    @objc func collectPament(sender: UIButton) {
-        // TODO: Fill flow for collection a payment.
+    @objc func collectPayment(sender: UIButton) {
+        // TODO: Fill in flow for collecting payments. Since there are multiple steps
+        // you may want to print to the console (call print(<string>)) after each step is done.
+        // You could also use the loading view and continue to update what is going on. 
     }
 }
