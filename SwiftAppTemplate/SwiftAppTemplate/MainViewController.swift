@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITextFieldDelegate {
     private let connectReaderButton = UIButton()
     private let collectPaymentButton = UIButton()
     private let paymentTextField = UITextField()
@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
 
     init() {
         super.init(nibName: nil, bundle: nil)
+        paymentTextField.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -75,10 +76,10 @@ class MainViewController: UIViewController {
 
         containerView.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
-            containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -MainViewController.spacing),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
+        ])
 
         connectReaderButton.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
@@ -86,7 +87,7 @@ class MainViewController: UIViewController {
             connectReaderButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             connectReaderButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
             connectReaderButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
-            ])
+        ])
 
         paymentTextField.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
@@ -95,7 +96,7 @@ class MainViewController: UIViewController {
             paymentTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
             paymentTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
             paymentTextField.heightAnchor.constraint(equalTo: connectReaderButton.heightAnchor),
-            ])
+        ])
 
 
         collectPaymentButton.translatesAutoresizingMaskIntoConstraints = false;
@@ -142,6 +143,17 @@ class MainViewController: UIViewController {
     }
 
     @objc func collectPayment(sender: UIButton) {
+        startCollectingPayment()
+    }
+
+    // Mark: - UITextFieldDelegate
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        startCollectingPayment()
+        return true
+    }
+
+    private func startCollectingPayment() {
         guard let amountString = paymentTextField.text else {
             errorAlert("Please input an amount to collect.")
             return
