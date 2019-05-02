@@ -8,17 +8,11 @@
 
 import Alamofire
 
-// TODO: Make this class implement the ConnectionTokenProvider protocol
 class APIClient {
 
     /**
-     To get started with this demo, you'll need to first deploy an instance of
-     our provided example backend:
-
-     https://github.com/stripe/example-terminal-backend
-
-     After deploying your backend, replace nil on the line below with the URL
-     of your Heroku app.
+     This example API client talks to an unauthenticated backend. You can point
+     the API client to a backend by setting this URL.
      */
 
     static var backendUrl: String? = nil

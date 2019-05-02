@@ -9,7 +9,7 @@
 import UIKit
 
 class MainViewController: UIViewController, UITextFieldDelegate {
-    private let connectReaderButton = UIButton()
+    private let discoverReadersButton = UIButton()
     private let collectPaymentButton = UIButton()
     private let paymentTextField = UITextField()
     private let containerView = UIView()
@@ -32,17 +32,17 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Terminal Example App"
+        title = "Example App"
         view.backgroundColor = UIColor.white
 
-        connectReaderButton.setTitle("Discover Readers", for: .normal)
-        connectReaderButton.setTitleColor(UIColor.white, for: .normal)
-        connectReaderButton.layer.borderWidth = 1.0
-        connectReaderButton.layer.borderColor = MainViewController.stripeBlue.cgColor
-        connectReaderButton.layer.cornerRadius = 4.0
-        connectReaderButton.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
-        connectReaderButton.backgroundColor = MainViewController.stripeBlue
-        connectReaderButton.addTarget(self, action: #selector(discoverReader), for: .touchUpInside)
+        discoverReadersButton.setTitle("Discover Readers", for: .normal)
+        discoverReadersButton.setTitleColor(UIColor.white, for: .normal)
+        discoverReadersButton.layer.borderWidth = 1.0
+        discoverReadersButton.layer.borderColor = MainViewController.stripeBlue.cgColor
+        discoverReadersButton.layer.cornerRadius = 4.0
+        discoverReadersButton.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
+        discoverReadersButton.backgroundColor = MainViewController.stripeBlue
+        discoverReadersButton.addTarget(self, action: #selector(discoverReader), for: .touchUpInside)
 
 
         collectPaymentButton.setTitle("Collect Payment", for: .normal)
@@ -67,7 +67,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         loadingLabel.textColor = UIColor.white
 
         view.addSubview(containerView)
-        containerView.addSubview(connectReaderButton)
+        containerView.addSubview(discoverReadersButton)
         containerView.addSubview(collectPaymentButton)
         containerView.addSubview(paymentTextField)
         view.addSubview(loadingContainerView)
@@ -81,21 +81,21 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
 
-        connectReaderButton.translatesAutoresizingMaskIntoConstraints = false;
+        discoverReadersButton.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
-            connectReaderButton.topAnchor.constraint(equalTo: containerView.topAnchor),
-            connectReaderButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            connectReaderButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
-            connectReaderButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
+            discoverReadersButton.topAnchor.constraint(equalTo: containerView.topAnchor),
+            discoverReadersButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            discoverReadersButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
+            discoverReadersButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
         ])
 
         paymentTextField.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
-            paymentTextField.topAnchor.constraint(equalTo: connectReaderButton.bottomAnchor, constant: MainViewController.spacing),
+            paymentTextField.topAnchor.constraint(equalTo: discoverReadersButton.bottomAnchor, constant: MainViewController.spacing),
             paymentTextField.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             paymentTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
             paymentTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
-            paymentTextField.heightAnchor.constraint(equalTo: connectReaderButton.heightAnchor),
+            paymentTextField.heightAnchor.constraint(equalTo: discoverReadersButton.heightAnchor),
         ])
 
 
@@ -131,15 +131,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
 
     @objc func discoverReader(sender: UIButton) {
-        loadingLabel.text = "Discovering Readers..."
-        loadingContainerView.isHidden = false
-        loadingIndicator.startAnimating()
+        // The following can be using to show a loading screen and message.
+        // loadingLabel.text = ""
+        // loadingContainerView.isHidden = false
+        // loadingIndicator.startAnimating()
 
-        // TODO once you have discovered some readers create a
-        // ReaderListViewController and push it onto the navigationController.
-
-        // let readerViewController = ReaderListViewController(readers)
-        // navigationController?.pushViewController(readerViewController, animated: true)
+        let listViewController = ListViewController(["test", "test", "test", "test"])
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 
     @objc func collectPayment(sender: UIButton) {
@@ -153,19 +151,18 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         return true
     }
 
+    //Mark: - Private
+
     private func startCollectingPayment() {
         guard let amountString = paymentTextField.text else {
-            errorAlert("Please input an amount to collect.")
+            presentErrorAlert("Please input an amount to collect.")
             return
         }
 
         guard let amountNumber = Int(amountString) else {
-            errorAlert("Please enter valid integer.")
+            presentErrorAlert("Please enter valid integer.")
             return
         }
 
-        // TODO: Fill in flow for collecting payments. Since there are multiple steps
-        // you may want to print to the console (call print(<string>)) after each step is done.
-        // You could also use the loading view and continue to update what is going on. g
     }
 }

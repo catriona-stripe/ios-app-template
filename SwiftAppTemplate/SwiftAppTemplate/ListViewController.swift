@@ -1,5 +1,5 @@
 //
-//  ReaderListViewController.swift
+//  ListViewController.swift
 //  SwiftAppTemplate
 //
 //  Created by Catriona Scott on 4/30/19.
@@ -8,21 +8,21 @@
 
 import UIKit
 
-class ReaderListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     private let tableView = UITableView(frame: CGRect.zero)
     private weak var cancelButton: UIBarButtonItem?
 
     private static var cellReuseIdentifier = "readerCell"
 
-    // TODO: update Any to Reader from StripeTerminal
-    private var readers: [Any] = []
+    // This could be changed to an actual type.
+    private var items: [Any] = []
 
-    init(readers: [Any]) {
+    init(_ items: [Any]) {
         super.init(nibName: nil, bundle: nil)
         tableView.delegate = self
         tableView.dataSource = self
-        self.readers = readers
+        self.items = items
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -36,7 +36,7 @@ class ReaderListViewController: UIViewController, UITableViewDelegate, UITableVi
 
         view.backgroundColor = UIColor.white
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReaderListViewController.cellReuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ListViewController.cellReuseIdentifier)
         tableView.separatorStyle = .none
         view.addSubview(tableView)
 
@@ -62,20 +62,25 @@ class ReaderListViewController: UIViewController, UITableViewDelegate, UITableVi
     // Mark - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Once a cell has been selected call connectReader on this reader.
+        // TODO: This is method is called once any of the items on a list have
+        // been selected.
     }
 
     // Mark - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return readers.count
+        return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListViewController.cellReuseIdentifier) ??  UITableViewCell(style: .default, reuseIdentifier: ListViewController.cellReuseIdentifier)
 
-        let cell = UITableViewCell(style: .default, reuseIdentifier: ReaderListViewController.cellReuseIdentifier)
-
-        // TODO: Set the cell's textLabel to display the reader serial number
+        // You can attempt to cast to a given object with as? and then safely
+        // access an object specific properity in order to set the textLabel
+        // of the cell to something meaningful.
+        if let text = items[indexPath.row] as? String {
+            cell.textLabel?.text = text
+        }
 
         let bottomBorder = UIView()
         bottomBorder.backgroundColor = UIColor.lightGray

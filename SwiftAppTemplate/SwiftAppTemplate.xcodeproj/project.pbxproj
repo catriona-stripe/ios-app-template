@@ -11,23 +11,12 @@
 		196235BE2272584D00B06E3C /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196235BD2272584D00B06E3C /* RootViewController.swift */; };
 		196235C32272584E00B06E3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 196235C22272584E00B06E3C /* Assets.xcassets */; };
 		196235C62272584E00B06E3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 196235C42272584E00B06E3C /* LaunchScreen.storyboard */; };
-		196235D12272584F00B06E3C /* SwiftAppTemplateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196235D02272584F00B06E3C /* SwiftAppTemplateTests.swift */; };
-		196235DC2278E73700B06E3C /* ReaderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196235DB2278E73700B06E3C /* ReaderListViewController.swift */; };
+		196235DC2278E73700B06E3C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196235DB2278E73700B06E3C /* ListViewController.swift */; };
 		196235DE227A1E0400B06E3C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196235DD227A1E0400B06E3C /* MainViewController.swift */; };
 		196235E0227A237C00B06E3C /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196235DF227A237C00B06E3C /* APIClient.swift */; };
 		197F4066227A561200C7A2EA /* UIViewController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197F4065227A561200C7A2EA /* UIViewController+Error.swift */; };
 		4769F34806CB79195AF74525 /* Pods_SwiftAppTemplate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35023DDBB1683EE9E102AF4D /* Pods_SwiftAppTemplate.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		196235CD2272584F00B06E3C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 196235B02272584D00B06E3C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 196235B72272584D00B06E3C;
-			remoteInfo = SwiftAppTemplate;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		196235B82272584D00B06E3C /* SwiftAppTemplate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAppTemplate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,10 +25,7 @@
 		196235C22272584E00B06E3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		196235C52272584E00B06E3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		196235C72272584E00B06E3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		196235CC2272584F00B06E3C /* SwiftAppTemplateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftAppTemplateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		196235D02272584F00B06E3C /* SwiftAppTemplateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAppTemplateTests.swift; sourceTree = "<group>"; };
-		196235D22272584F00B06E3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		196235DB2278E73700B06E3C /* ReaderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderListViewController.swift; sourceTree = "<group>"; };
+		196235DB2278E73700B06E3C /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		196235DD227A1E0400B06E3C /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		196235DF227A237C00B06E3C /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		197F4065227A561200C7A2EA /* UIViewController+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Error.swift"; sourceTree = "<group>"; };
@@ -57,13 +43,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		196235C92272584F00B06E3C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -71,7 +50,6 @@
 			isa = PBXGroup;
 			children = (
 				196235BA2272584D00B06E3C /* SwiftAppTemplate */,
-				196235CF2272584F00B06E3C /* SwiftAppTemplateTests */,
 				196235B92272584D00B06E3C /* Products */,
 				633D85422C04FB7C1B95E788 /* Pods */,
 				EF38615F65D85429F996E8DF /* Frameworks */,
@@ -82,7 +60,6 @@
 			isa = PBXGroup;
 			children = (
 				196235B82272584D00B06E3C /* SwiftAppTemplate.app */,
-				196235CC2272584F00B06E3C /* SwiftAppTemplateTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,19 +74,10 @@
 				196235C72272584E00B06E3C /* Info.plist */,
 				196235DF227A237C00B06E3C /* APIClient.swift */,
 				197F4065227A561200C7A2EA /* UIViewController+Error.swift */,
-				196235DB2278E73700B06E3C /* ReaderListViewController.swift */,
+				196235DB2278E73700B06E3C /* ListViewController.swift */,
 				196235DD227A1E0400B06E3C /* MainViewController.swift */,
 			);
 			path = SwiftAppTemplate;
-			sourceTree = "<group>";
-		};
-		196235CF2272584F00B06E3C /* SwiftAppTemplateTests */ = {
-			isa = PBXGroup;
-			children = (
-				196235D02272584F00B06E3C /* SwiftAppTemplateTests.swift */,
-				196235D22272584F00B06E3C /* Info.plist */,
-			);
-			path = SwiftAppTemplateTests;
 			sourceTree = "<group>";
 		};
 		633D85422C04FB7C1B95E788 /* Pods */ = {
@@ -151,24 +119,6 @@
 			productReference = 196235B82272584D00B06E3C /* SwiftAppTemplate.app */;
 			productType = "com.apple.product-type.application";
 		};
-		196235CB2272584F00B06E3C /* SwiftAppTemplateTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 196235D82272584F00B06E3C /* Build configuration list for PBXNativeTarget "SwiftAppTemplateTests" */;
-			buildPhases = (
-				196235C82272584F00B06E3C /* Sources */,
-				196235C92272584F00B06E3C /* Frameworks */,
-				196235CA2272584F00B06E3C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				196235CE2272584F00B06E3C /* PBXTargetDependency */,
-			);
-			name = SwiftAppTemplateTests;
-			productName = SwiftAppTemplateTests;
-			productReference = 196235CC2272584F00B06E3C /* SwiftAppTemplateTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -181,10 +131,6 @@
 				TargetAttributes = {
 					196235B72272584D00B06E3C = {
 						CreatedOnToolsVersion = 10.1;
-					};
-					196235CB2272584F00B06E3C = {
-						CreatedOnToolsVersion = 10.1;
-						TestTargetID = 196235B72272584D00B06E3C;
 					};
 				};
 			};
@@ -202,7 +148,6 @@
 			projectRoot = "";
 			targets = (
 				196235B72272584D00B06E3C /* SwiftAppTemplate */,
-				196235CB2272584F00B06E3C /* SwiftAppTemplateTests */,
 			);
 		};
 /* End PBXProject section */
@@ -214,13 +159,6 @@
 			files = (
 				196235C62272584E00B06E3C /* LaunchScreen.storyboard in Resources */,
 				196235C32272584E00B06E3C /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		196235CA2272584F00B06E3C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,30 +218,14 @@
 			files = (
 				196235BE2272584D00B06E3C /* RootViewController.swift in Sources */,
 				196235BC2272584D00B06E3C /* AppDelegate.swift in Sources */,
-				196235DC2278E73700B06E3C /* ReaderListViewController.swift in Sources */,
+				196235DC2278E73700B06E3C /* ListViewController.swift in Sources */,
 				197F4066227A561200C7A2EA /* UIViewController+Error.swift in Sources */,
 				196235E0227A237C00B06E3C /* APIClient.swift in Sources */,
 				196235DE227A1E0400B06E3C /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		196235C82272584F00B06E3C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				196235D12272584F00B06E3C /* SwiftAppTemplateTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		196235CE2272584F00B06E3C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 196235B72272584D00B06E3C /* SwiftAppTemplate */;
-			targetProxy = 196235CD2272584F00B06E3C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		196235C42272584E00B06E3C /* LaunchScreen.storyboard */ = {
@@ -471,48 +393,6 @@
 			};
 			name = Release;
 		};
-		196235D92272584F00B06E3C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Y28TH9SHX7;
-				INFOPLIST_FILE = SwiftAppTemplateTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = come.stripe.SwiftAppTemplateTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftAppTemplate.app/SwiftAppTemplate";
-			};
-			name = Debug;
-		};
-		196235DA2272584F00B06E3C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Y28TH9SHX7;
-				INFOPLIST_FILE = SwiftAppTemplateTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = come.stripe.SwiftAppTemplateTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftAppTemplate.app/SwiftAppTemplate";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -530,15 +410,6 @@
 			buildConfigurations = (
 				196235D62272584F00B06E3C /* Debug */,
 				196235D72272584F00B06E3C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		196235D82272584F00B06E3C /* Build configuration list for PBXNativeTarget "SwiftAppTemplateTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				196235D92272584F00B06E3C /* Debug */,
-				196235DA2272584F00B06E3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
