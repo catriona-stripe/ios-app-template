@@ -30,7 +30,8 @@ class APIClient {
 //            let url = backendUrl.appendingPathComponent("connection_token")
 //            let params: [String: Any] = [:] // whatever parameters necessary for your backend to authenticate the client
 //
-//            Alamofire.request(url, method: .post, parameters: params)
+//
+//            AF.request(url, method: .post, parameters: params)
 //                .responseJSON { responseJSON in
 //                    switch responseJSON.result {
 //                    case .success(let json):
