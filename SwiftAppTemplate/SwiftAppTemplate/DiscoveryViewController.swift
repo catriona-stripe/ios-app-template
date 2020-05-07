@@ -7,22 +7,16 @@
 //
 
 import UIKit
+//import StripeTerminal // Uncomment after setting up the framework
 
-class DiscoveryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    private let tableView = UITableView(frame: CGRect.zero)
-    private weak var cancelButton: UIBarButtonItem?
-
+class DiscoveryViewController: UITableViewController/*, DiscoveryDelegate */ {
     private static var cellReuseIdentifier = "readerCell"
 
-    // This could be changed to an actual type.
-    private var items: [Any] = []
+    // This could be changed to the Reader type.
+    private var items: [String] = []
 
-    init(_ items: [Any]) {
+    init() {
         super.init(nibName: nil, bundle: nil)
-        tableView.delegate = self
-        tableView.dataSource = self
-        self.items = items
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -34,64 +28,50 @@ class DiscoveryViewController: UIViewController, UITableViewDelegate, UITableVie
 
         title = "Connect Reader"
 
-        view.backgroundColor = UIColor.white
-
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: DiscoveryViewController.cellReuseIdentifier)
-        tableView.separatorStyle = .none
-        view.addSubview(tableView)
 
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAction))
 
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissAction))
-        self.cancelButton = cancelButton
-        navigationItem.leftBarButtonItem = cancelButton
-
-        tableView.reloadData()
+// Make sure to uncomment the DiscoveryDelegate protocol part above too
+//        Terminal.shared.discoverReaders(DiscoveryConfiguration(deviceType: {you pick}, discoveryMethod: {you pick}, simulated: false), delegate: self) { [unowned self] error in
+//            if let error = error {
+//                self.presentErrorAlert(error.localizedDescription)
+//            }
+//        }
     }
 
     @objc func dismissAction() {
         navigationController?.popViewController(animated: true)
     }
 
-    // Mark - UITableViewDelegate
+    // MARK: - DiscoveryDelegate
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    func terminal(_ terminal: Terminal, didUpdateDiscoveredReaders readers: [Reader]) {
+//        for reader in readers {
+//            items.removeAll { $0 == reader.serialNumber } // make sure we don't have duplicates
+//            items.append(reader.serialNumber)
+//        }
+//        self.tableView.reloadData()
+//    }
+
+    // MARK: - UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: This is method is called once any of the items on a list have
-        // been selected.
+        // been selected. If you update the `items` to store `Reader`s you probably
+        // want to connect to that reader now.
     }
 
-    // Mark - UITableViewDataSource
+    // MARK: - UITableViewDataSource
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DiscoveryViewController.cellReuseIdentifier) ??  UITableViewCell(style: .default, reuseIdentifier: DiscoveryViewController.cellReuseIdentifier)
 
-        // You can attempt to cast to a given object with as? and then safely
-        // access an object specific properity in order to set the textLabel
-        // of the cell to something meaningful.
-        if let text = items[indexPath.row] as? String {
-            cell.textLabel?.text = text
-        }
-
-        let bottomBorder = UIView()
-        bottomBorder.backgroundColor = UIColor.lightGray
-        cell.contentView.addSubview(bottomBorder)
-        bottomBorder.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            bottomBorder.heightAnchor.constraint(equalToConstant: 1.0),
-            bottomBorder.leadingAnchor.constraint(equalTo: cell.leadingAnchor),
-            bottomBorder.trailingAnchor.constraint(equalTo: cell.trailingAnchor),
-            bottomBorder.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
-        ])
+        cell.textLabel?.text = items[indexPath.row]
 
         return cell
     }

@@ -136,7 +136,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         // loadingContainerView.isHidden = false
         // loadingIndicator.startAnimating()
 
-        let discoveryViewController = DiscoveryViewController(["test", "test", "test", "test"])
+        let discoveryViewController = DiscoveryViewController()
         navigationController?.pushViewController(discoveryViewController, animated: true)
     }
 
