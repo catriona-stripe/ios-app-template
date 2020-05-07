@@ -136,8 +136,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         // loadingContainerView.isHidden = false
         // loadingIndicator.startAnimating()
 
-        let listViewController = ListViewController(["test", "test", "test", "test"])
-        navigationController?.pushViewController(listViewController, animated: true)
+        let discoveryViewController = DiscoveryViewController(["test", "test", "test", "test"])
+        navigationController?.pushViewController(discoveryViewController, animated: true)
     }
 
     @objc func collectPayment(sender: UIButton) {

@@ -1,5 +1,5 @@
 //
-//  ListViewController.swift
+//  DiscoveryViewController.swift
 //  SwiftAppTemplate
 //
 //  Created by Catriona Scott on 4/30/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DiscoveryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     private let tableView = UITableView(frame: CGRect.zero)
     private weak var cancelButton: UIBarButtonItem?
@@ -36,7 +36,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         view.backgroundColor = UIColor.white
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ListViewController.cellReuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: DiscoveryViewController.cellReuseIdentifier)
         tableView.separatorStyle = .none
         view.addSubview(tableView)
 
@@ -73,7 +73,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ListViewController.cellReuseIdentifier) ??  UITableViewCell(style: .default, reuseIdentifier: ListViewController.cellReuseIdentifier)
+        let cell = tableView.dequeueReusableCell(withIdentifier: DiscoveryViewController.cellReuseIdentifier) ??  UITableViewCell(style: .default, reuseIdentifier: DiscoveryViewController.cellReuseIdentifier)
 
         // You can attempt to cast to a given object with as? and then safely
         // access an object specific properity in order to set the textLabel
