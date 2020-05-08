@@ -11,12 +11,16 @@ import UIKit
 class MainViewController: UIViewController, UITextFieldDelegate {
     private let statusImageView = UIImageView()
     private let statusLabel = UILabel()
+    private let container = UIStackView()
     private let paymentTextField = UITextField()
+    private var keyboardAvoidingConstraints = [NSLayoutConstraint]()
     private static let spacing: CGFloat = 50.0
     private static let stripeBlue = UIColor(red: 103.0/255.0, green:  114.0/255.0, blue: 229.0/255.0, alpha: 1.0)
 
     init() {
         super.init(nibName: nil, bundle: nil)
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main, using: keyboardWillShow)
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main, using: keyboardWillHide)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -54,7 +58,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         paymentTextField.keyboardType = .numberPad
         paymentTextField.borderStyle = .roundedRect
 
-        let stackView = UIStackView(arrangedSubviews: [
+        for view in [
             UIView(), // Spacer()
             statusImageView,
             statusLabel,
@@ -62,18 +66,20 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             paymentTextField,
             collectPaymentButton,
             UIView(), // Spacer()
-        ])
-        stackView.axis = .vertical
-        stackView.spacing = MainViewController.spacing
-        stackView.isLayoutMarginsRelativeArrangement = true
-        view.addSubview(stackView)
+            ] {
+                container.addArrangedSubview(view)
+        }
+        container.axis = .vertical
+        container.spacing = MainViewController.spacing
+        container.isLayoutMarginsRelativeArrangement = true
+        view.addSubview(container)
 
-        stackView.translatesAutoresizingMaskIntoConstraints = false;
+        container.translatesAutoresizingMaskIntoConstraints = false;
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -MainViewController.spacing),
-            stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: MainViewController.spacing),
+            container.topAnchor.constraint(equalTo: self.view.topAnchor),
+            container.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -MainViewController.spacing),
+            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: MainViewController.spacing),
             // Fixed size for the status image
             statusImageView.widthAnchor.constraint(equalToConstant: 60),
             statusImageView.heightAnchor.constraint(equalToConstant: 60),
@@ -109,6 +115,25 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             presentErrorAlert("Please enter valid integer.")
             return
         }
+
+        paymentTextField.resignFirstResponder()
+    }
+
+    private func keyboardWillShow(notification: Notification) {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        // hackety hack, just shift the container up so the bottom is always visible
+        NSLayoutConstraint.deactivate(keyboardAvoidingConstraints)
+        keyboardAvoidingConstraints = [
+            container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -keyboardFrame.size.height),
+            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -keyboardFrame.size.height),
+        ]
+        NSLayoutConstraint.activate(keyboardAvoidingConstraints)
+    }
+
+    private func keyboardWillHide(notification: Notification) {
+        NSLayoutConstraint.deactivate(keyboardAvoidingConstraints)
     }
 
     private static func stripeyButton() -> UIButton {
