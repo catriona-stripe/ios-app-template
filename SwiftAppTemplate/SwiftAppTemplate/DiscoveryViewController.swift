@@ -7,9 +7,8 @@
 //
 
 import UIKit
-//import StripeTerminal // Uncomment after setting up the framework
 
-class DiscoveryViewController: UITableViewController/*, DiscoveryDelegate */ {
+class DiscoveryViewController: UITableViewController {
     private static var cellReuseIdentifier = "readerCell"
 
     // This could be changed to the Reader type.
@@ -31,28 +30,11 @@ class DiscoveryViewController: UITableViewController/*, DiscoveryDelegate */ {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: DiscoveryViewController.cellReuseIdentifier)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAction))
-
-// Make sure to uncomment the DiscoveryDelegate protocol part above too
-//        Terminal.shared.discoverReaders(DiscoveryConfiguration(deviceType: {you pick}, discoveryMethod: {you pick}, simulated: false), delegate: self) { [unowned self] error in
-//            if let error = error {
-//                self.presentErrorAlert(error.localizedDescription)
-//            }
-//        }
     }
 
     @objc func dismissAction() {
         navigationController?.popViewController(animated: true)
     }
-
-    // MARK: - DiscoveryDelegate
-
-//    func terminal(_ terminal: Terminal, didUpdateDiscoveredReaders readers: [Reader]) {
-//        for reader in readers {
-//            items.removeAll { $0 == reader.serialNumber } // make sure we don't have duplicates
-//            items.append(reader.serialNumber)
-//        }
-//        self.tableView.reloadData()
-//    }
 
     // MARK: - UITableViewDelegate
 
