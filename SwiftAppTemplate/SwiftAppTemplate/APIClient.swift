@@ -38,7 +38,7 @@ class APIClient {
 //        }
 //        var responseURL = backendURL
 //        for component in pathComponents {
-//            responseURL = backendURL.appendingPathComponent(component)
+//            responseURL = responseURL.appendingPathComponent(component)
 //        }
 //        return responseURL
 //    }
@@ -61,14 +61,12 @@ class APIClient {
 //        }
 //    }
 //
-//    func capturePaymentIntent(_ paymentIntentId: String, stripeAccount: String?, additionalParams: [String: Any]? = nil, completion: @escaping (Error?) -> Void) {
+//    func capturePaymentIntent(_ paymentIntentId: String, additionalParams: [String: Any]? = nil, completion: @escaping (Error?) -> Void) {
 //        let url = self.urlWithPathComponents(["payment_intents", paymentIntentId, "capture"])
-//        let headers = HTTPHeaders(["Stripe-Account": stripeAccount ?? ""])
 //        AF.request(url,
 //                   method: .post,
-//                   parameters: additionalParams,
-//                   headers: headers)
-//            .responseJSON(completionHandler: { response in
+//                   parameters: additionalParams)
+//            .responseString(completionHandler: { response in
 //                completion(response.error)
 //            })
 //    }

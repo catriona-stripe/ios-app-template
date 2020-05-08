@@ -87,7 +87,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             return
         }
 
-        guard let _ = Int(amountString) else {
+        guard let _ = UInt(amountString) else {
             presentErrorAlert("Please enter valid integer.")
             return
         }
