@@ -13,7 +13,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     private let statusLabel = UILabel()
     private let container = UIStackView()
     private let paymentTextField = UITextField()
-    private var keyboardAvoidingConstraints = [NSLayoutConstraint]()
+    private var currentTopAndBottomConstraints = [NSLayoutConstraint]()
     private static let spacing: CGFloat = 50.0
     private static let stripeBlue = UIColor(red: 103.0/255.0, green:  114.0/255.0, blue: 229.0/255.0, alpha: 1.0)
 
@@ -75,13 +75,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(container)
 
         container.translatesAutoresizingMaskIntoConstraints = false;
+        self.updateConstraintsForKeyboardHeight(0)
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: self.view.topAnchor),
             container.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -MainViewController.spacing),
-            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: MainViewController.spacing),
             // Fixed size for the status image
-            statusImageView.widthAnchor.constraint(equalToConstant: 60),
             statusImageView.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
@@ -106,6 +104,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     //Mark: - Private
 
     private func startCollectingPayment() {
+        paymentTextField.resignFirstResponder()
+
         guard let amountString = paymentTextField.text else {
             presentErrorAlert("Please input an amount to collect.")
             return
@@ -115,8 +115,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             presentErrorAlert("Please enter valid integer.")
             return
         }
-
-        paymentTextField.resignFirstResponder()
     }
 
     private func keyboardWillShow(notification: Notification) {
@@ -124,16 +122,26 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             return
         }
         // hackety hack, just shift the container up so the bottom is always visible
-        NSLayoutConstraint.deactivate(keyboardAvoidingConstraints)
-        keyboardAvoidingConstraints = [
-            container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -keyboardFrame.size.height),
-            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -keyboardFrame.size.height),
-        ]
-        NSLayoutConstraint.activate(keyboardAvoidingConstraints)
+        // Use -2 view since there's a spacer...hackety hack
+        let containerMaxY = container.arrangedSubviews[container.arrangedSubviews.count - 2].frame.maxY + MainViewController.spacing
+        let emptySpace = self.view.frame.maxY - containerMaxY
+        let shiftForKeyboard = keyboardFrame.size.height - emptySpace
+        if shiftForKeyboard > 0 {
+            updateConstraintsForKeyboardHeight(shiftForKeyboard)
+        }
     }
 
     private func keyboardWillHide(notification: Notification) {
-        NSLayoutConstraint.deactivate(keyboardAvoidingConstraints)
+        updateConstraintsForKeyboardHeight(0)
+    }
+
+    private func updateConstraintsForKeyboardHeight(_ height: CGFloat) {
+        NSLayoutConstraint.deactivate(currentTopAndBottomConstraints)
+        currentTopAndBottomConstraints = [
+            container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -height),
+            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -height),
+        ]
+        NSLayoutConstraint.activate(currentTopAndBottomConstraints)
     }
 
     private static func stripeyButton() -> UIButton {
@@ -144,6 +152,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         button.layer.cornerRadius = 4.0
         button.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
         button.backgroundColor = MainViewController.stripeBlue
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }
 }
