@@ -9,20 +9,18 @@
 import UIKit
 
 class MainViewController: UIViewController, UITextFieldDelegate {
-    private let discoverReadersButton = UIButton()
-    private let collectPaymentButton = UIButton()
+    private let statusImageView = UIImageView()
+    private let statusLabel = UILabel()
+    private let container = UIStackView()
     private let paymentTextField = UITextField()
-    private let containerView = UIView()
-    private let loadingIndicator = UIActivityIndicatorView()
-    private let loadingContainerView = UIView()
-    private let loadingLabel = UILabel()
-
+    private var currentTopAndBottomConstraints = [NSLayoutConstraint]()
     private static let spacing: CGFloat = 50.0
     private static let stripeBlue = UIColor(red: 103.0/255.0, green:  114.0/255.0, blue: 229.0/255.0, alpha: 1.0)
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        paymentTextField.delegate = self
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main, using: keyboardWillShow)
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main, using: keyboardWillHide)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -35,109 +33,61 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         title = "Example App"
         view.backgroundColor = UIColor.white
 
+        paymentTextField.delegate = self
+
+        // You can change the set image and tintColor when connected to show some state
+        // bolt.fill or creditcard are some other handy symbols 🤷‍♂️
+        statusImageView.image = UIImage(systemName: "bolt.slash.fill")
+        statusImageView.contentMode = .scaleAspectFit
+        statusImageView.translatesAutoresizingMaskIntoConstraints = false
+        statusImageView.tintColor = .lightGray
+
+        // Change the status label text when connected too and could use it to show the reader messages
+        statusLabel.textAlignment = .center
+        statusLabel.text = "No reader connected"
+
+        let discoverReadersButton = MainViewController.stripeyButton()
         discoverReadersButton.setTitle("Discover Readers", for: .normal)
-        discoverReadersButton.setTitleColor(UIColor.white, for: .normal)
-        discoverReadersButton.layer.borderWidth = 1.0
-        discoverReadersButton.layer.borderColor = MainViewController.stripeBlue.cgColor
-        discoverReadersButton.layer.cornerRadius = 4.0
-        discoverReadersButton.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
-        discoverReadersButton.backgroundColor = MainViewController.stripeBlue
         discoverReadersButton.addTarget(self, action: #selector(discoverReader), for: .touchUpInside)
 
-
+        let collectPaymentButton = MainViewController.stripeyButton()
         collectPaymentButton.setTitle("Collect Payment", for: .normal)
-        collectPaymentButton.setTitleColor(UIColor.white, for: .normal)
-        collectPaymentButton.layer.borderWidth = 1.0
-        collectPaymentButton.layer.borderColor = MainViewController.stripeBlue.cgColor
-        collectPaymentButton.layer.cornerRadius = 4.0
-        collectPaymentButton.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
-        collectPaymentButton.backgroundColor = MainViewController.stripeBlue
         collectPaymentButton.addTarget(self, action: #selector(collectPayment), for: .touchUpInside)
 
         paymentTextField.placeholder = "0"
-        paymentTextField.keyboardType = .numbersAndPunctuation
+        paymentTextField.keyboardType = .numberPad
         paymentTextField.borderStyle = .roundedRect
 
-        paymentTextField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 0.0))
-        paymentTextField.leftViewMode = .always
+        for view in [
+            UIView(), // Spacer()
+            statusImageView,
+            statusLabel,
+            discoverReadersButton,
+            paymentTextField,
+            collectPaymentButton,
+            UIView(), // Spacer()
+            ] {
+                container.addArrangedSubview(view)
+        }
+        container.axis = .vertical
+        container.spacing = MainViewController.spacing
+        container.isLayoutMarginsRelativeArrangement = true
+        view.addSubview(container)
 
-        loadingContainerView.isHidden = true
-        loadingContainerView.backgroundColor = UIColor(white: 0.0, alpha: 0.75)
-
-        loadingLabel.textColor = UIColor.white
-
-        view.addSubview(containerView)
-        containerView.addSubview(discoverReadersButton)
-        containerView.addSubview(collectPaymentButton)
-        containerView.addSubview(paymentTextField)
-        view.addSubview(loadingContainerView)
-        loadingContainerView.addSubview(loadingIndicator)
-        loadingContainerView.addSubview(loadingLabel)
-
-        containerView.translatesAutoresizingMaskIntoConstraints = false;
+        container.translatesAutoresizingMaskIntoConstraints = false;
+        self.updateConstraintsForKeyboardHeight(0)
         NSLayoutConstraint.activate([
-            containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -MainViewController.spacing),
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
-
-        discoverReadersButton.translatesAutoresizingMaskIntoConstraints = false;
-        NSLayoutConstraint.activate([
-            discoverReadersButton.topAnchor.constraint(equalTo: containerView.topAnchor),
-            discoverReadersButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            discoverReadersButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
-            discoverReadersButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
-        ])
-
-        paymentTextField.translatesAutoresizingMaskIntoConstraints = false;
-        NSLayoutConstraint.activate([
-            paymentTextField.topAnchor.constraint(equalTo: discoverReadersButton.bottomAnchor, constant: MainViewController.spacing),
-            paymentTextField.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            paymentTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
-            paymentTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
-            paymentTextField.heightAnchor.constraint(equalTo: discoverReadersButton.heightAnchor),
-        ])
-
-
-        collectPaymentButton.translatesAutoresizingMaskIntoConstraints = false;
-        NSLayoutConstraint.activate([
-            collectPaymentButton.topAnchor.constraint(equalTo: paymentTextField.bottomAnchor, constant: MainViewController.spacing),
-            collectPaymentButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            collectPaymentButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            collectPaymentButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: MainViewController.spacing),
-            collectPaymentButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -MainViewController.spacing),
-        ])
-
-        loadingContainerView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            loadingContainerView.topAnchor.constraint(equalTo: view.topAnchor),
-            loadingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            loadingContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            loadingContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        ])
-
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            loadingIndicator.centerXAnchor.constraint(equalTo: loadingContainerView.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: loadingContainerView.centerYAnchor),
-        ])
-
-        loadingLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            loadingLabel.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor, constant: MainViewController.spacing),
-            loadingLabel.centerXAnchor.constraint(equalTo: loadingContainerView.centerXAnchor)
+            container.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -MainViewController.spacing),
+            container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: MainViewController.spacing),
+            // Fixed size for the status image
+            statusImageView.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
 
-
     @objc func discoverReader(sender: UIButton) {
-        // The following can be using to show a loading screen and message.
-        // loadingLabel.text = ""
-        // loadingContainerView.isHidden = false
-        // loadingIndicator.startAnimating()
-
-        let listViewController = ListViewController(["test", "test", "test", "test"])
-        navigationController?.pushViewController(listViewController, animated: true)
+        // Use the DiscoveryVC to start discovery and connect to a reader (or return a reader to connect to)
+        let discoveryViewController = DiscoveryViewController()
+        navigationController?.pushViewController(discoveryViewController, animated: true)
     }
 
     @objc func collectPayment(sender: UIButton) {
@@ -154,15 +104,55 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     //Mark: - Private
 
     private func startCollectingPayment() {
+        paymentTextField.resignFirstResponder()
+
         guard let amountString = paymentTextField.text else {
             presentErrorAlert("Please input an amount to collect.")
             return
         }
 
-        guard let _ = Int(amountString) else {
+        guard let _ = UInt(amountString) else {
             presentErrorAlert("Please enter valid integer.")
             return
         }
+    }
 
+    private func keyboardWillShow(notification: Notification) {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        // hackety hack, just shift the container up so the bottom is always visible
+        // Use -2 view since there's a spacer...hackety hack
+        let containerMaxY = container.arrangedSubviews[container.arrangedSubviews.count - 2].frame.maxY + MainViewController.spacing
+        let emptySpace = self.view.frame.maxY - containerMaxY
+        let shiftForKeyboard = keyboardFrame.size.height - emptySpace
+        if shiftForKeyboard > 0 {
+            updateConstraintsForKeyboardHeight(shiftForKeyboard)
+        }
+    }
+
+    private func keyboardWillHide(notification: Notification) {
+        updateConstraintsForKeyboardHeight(0)
+    }
+
+    private func updateConstraintsForKeyboardHeight(_ height: CGFloat) {
+        NSLayoutConstraint.deactivate(currentTopAndBottomConstraints)
+        currentTopAndBottomConstraints = [
+            container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -height),
+            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -height),
+        ]
+        NSLayoutConstraint.activate(currentTopAndBottomConstraints)
+    }
+
+    private static func stripeyButton() -> UIButton {
+        let button = UIButton()
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = MainViewController.stripeBlue.cgColor
+        button.layer.cornerRadius = 4.0
+        button.titleEdgeInsets = UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
+        button.backgroundColor = MainViewController.stripeBlue
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
 }
