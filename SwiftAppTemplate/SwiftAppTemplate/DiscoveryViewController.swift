@@ -31,7 +31,7 @@ class DiscoveryViewController: UITableViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAction))
 
-        let activityIndicator = UIActivityIndicatorView.init(style: .gray)
+        let activityIndicator = UIActivityIndicatorView.init(style: .medium)
         let barButton = UIBarButtonItem(customView: activityIndicator)
         activityIndicator.startAnimating()
         navigationItem.rightBarButtonItem = barButton

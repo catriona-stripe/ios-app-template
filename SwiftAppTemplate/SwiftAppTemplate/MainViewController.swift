@@ -9,6 +9,8 @@
 import UIKit
 
 class MainViewController: UIViewController, UITextFieldDelegate {
+    private let statusImageView = UIImageView()
+    private let statusLabel = UILabel()
     private let paymentTextField = UITextField()
     private static let spacing: CGFloat = 50.0
     private static let stripeBlue = UIColor(red: 103.0/255.0, green:  114.0/255.0, blue: 229.0/255.0, alpha: 1.0)
@@ -29,6 +31,17 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
         paymentTextField.delegate = self
 
+        // You can change the set image and tintColor when connected to show some state
+        // bolt.fill or creditcard are some other handy symbols 🤷‍♂️
+        statusImageView.image = UIImage(systemName: "bolt.slash.fill")
+        statusImageView.contentMode = .scaleAspectFit
+        statusImageView.translatesAutoresizingMaskIntoConstraints = false
+        statusImageView.tintColor = .lightGray
+
+        // Change the status label text when connected too and could use it to show the reader messages
+        statusLabel.textAlignment = .center
+        statusLabel.text = "No reader connected"
+
         let discoverReadersButton = MainViewController.stripeyButton()
         discoverReadersButton.setTitle("Discover Readers", for: .normal)
         discoverReadersButton.addTarget(self, action: #selector(discoverReader), for: .touchUpInside)
@@ -43,6 +56,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
         let stackView = UIStackView(arrangedSubviews: [
             UIView(), // Spacer()
+            statusImageView,
+            statusLabel,
             discoverReadersButton,
             paymentTextField,
             collectPaymentButton,
@@ -59,6 +74,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -MainViewController.spacing),
             stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: MainViewController.spacing),
+            // Fixed size for the status image
+            statusImageView.widthAnchor.constraint(equalToConstant: 60),
+            statusImageView.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
 
