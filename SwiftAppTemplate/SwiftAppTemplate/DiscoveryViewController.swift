@@ -30,6 +30,11 @@ class DiscoveryViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: DiscoveryViewController.cellReuseIdentifier)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAction))
+
+        let activityIndicator = UIActivityIndicatorView.init(style: .gray)
+        let barButton = UIBarButtonItem(customView: activityIndicator)
+        activityIndicator.startAnimating()
+        navigationItem.rightBarButtonItem = barButton
     }
 
     @objc func dismissAction() {
