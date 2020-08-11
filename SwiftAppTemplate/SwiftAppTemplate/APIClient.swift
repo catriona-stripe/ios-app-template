@@ -26,6 +26,13 @@ class APIClient {
 
     static let backendUrl: String = ""
 
+    /**
+     Temporary hack: fetching locations requires an account secret token. This
+     should be going through the merchant backend but for now we're embedding the
+     token in here to provide the locations helper.
+     */
+    static let secretKey: String = ""
+
     static let defaultError = NSError(domain: "APIClient Error",
                                       code: 1,
                                       userInfo: [
@@ -70,4 +77,23 @@ class APIClient {
 //                completion(response.error)
 //            })
 //    }
+
+    // Provided as a helper to fetch your accounts locations. Returns an array of dictionaries containing the
+    // locations as defined in https://stripe.com/docs/api/terminal/locations/list
+    func fetchLocations(_ completion: @escaping ([[String:AnyObject]]?, Error?) -> Void) {
+        let url = "https://api.stripe.com/v1/terminal/locations"
+        assert(APIClient.secretKey.count > 0)
+        AF.request(url, method: .get, headers: HTTPHeaders([HTTPHeader.authorization(bearerToken: APIClient.secretKey)]))
+            .responseJSON { responseJSON in
+                switch responseJSON.result {
+                case .success(let json):
+                    if let json = json as? [String: AnyObject],
+                        let locations = json["data"] as? [[String: AnyObject]] {
+                        completion(locations, nil)
+                    }
+                case .failure(let error):
+                    completion(nil, error)
+                }
+        }
+    }
 }
