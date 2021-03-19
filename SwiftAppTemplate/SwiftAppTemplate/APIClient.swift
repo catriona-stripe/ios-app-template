@@ -20,7 +20,7 @@ class APIClient {
      After deploying your backend, replace empty string on the line below with
      the URL of your Heroku app.
 
-     Have this class impolement ConnectionTokenProvider and uncomment
+     Have this class implement ConnectionTokenProvider and uncomment
      fetchConnectionToken once you have StripeTerminal installed in the app.
      */
 
